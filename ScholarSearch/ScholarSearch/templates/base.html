@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hello{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> {% block extra_head %}{% endblock extra_head %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding-top: 60px;
+            /* Add padding to avoid content being hidden behind the navbar */
+            background-color: #f4f4f4;
+            /* Light grey background */
+        }
+        
+        .navbar {
+            position: fixed;
+            /* Fixed position to stay at the top */
+            top: 0;
+            /* Align to the top of the page */
+            width: 100%;
+            /* Full width */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            /* Ensure the navbar is above other content */
+        }
+        
+        .navbar a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        
+        .navbar a:hover {
+            background-color: #555;
+            /* Slightly lighter grey on hover */
+        }
+        
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .navbar .menu {
+            display: flex;
+            gap: 10px;
+            /* Space between menu items */
+        }
+        
+        .navbar i {
+            margin-right: 30px;
+            /* Space icon and label */
+        }
+        /* Add your other styles here */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <nav class="navbar">
+            <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
+            <span class="navbar-title">{% block navbar_title %}{% endblock %}</span>
+            <a href="{% url 'search' %}"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </nav>
+
+
+    </nav>
+
+    {% block content %}{% endblock %} {% block scripts %}{% endblock %}
+</body>
+
+</html>

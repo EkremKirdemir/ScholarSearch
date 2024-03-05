@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block title %}{{ document.paper_name }}{% endblock %} {% block content %}
+<div class="paper-detail-container">
+    <h1>{{ document.paper_name }}</h1>
+    <!-- Display other details of the paper here -->
+    <p>{{ document.paper_abstract }}</p>
+    <!-- Add more details as needed -->
+</div>
+{% endblock %}

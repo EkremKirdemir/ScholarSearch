@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% block title %}Home{% endblock %}{% block navbar_title %}Past Search Results{% endblock %} {% block extra_head %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 60px 0 0;
+        /* Adjust padding to accommodate fixed navbar */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        /* Align to the top */
+        min-height: 100vh;
+        background: linear-gradient(to right, #6dd5ed, #2193b0);
+    }
+    
+    .search-results-container {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 1000px;
+        /* Adjusted for a wider container */
+        margin-top: 20px;
+        /* Space below navbar */
+    }
+    
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    li {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .pagination {
+        margin-top: 20px;
+    }
+    
+    .pagination .step-links {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .pagination a {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .pagination a:hover {
+        background-color: #0056b3;
+    }
+    
+    .pagination .current {
+        padding: 8px 16px;
+    }
+</style>
+{% endblock %}{% block content %}
+<div class="search-results-container">
+    <h2>Past Search Results</h2>
+    <ul>
+        {% for result in page_obj %}
+        <li>
+            <a href="{% url 'paper_detail' result.id_str %}">{{ result.paper_name }}</a>
+        </li>
+        {% empty %}
+        <li>No past search results found.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span> {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

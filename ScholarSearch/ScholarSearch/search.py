@@ -8,16 +8,9 @@ from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://admin:admin@search0.sof6xtt.mongodb.net/')
-# Access (or screate) a database
 db = client['SearchScholar']
-
-# Access (or create) a collection within the database
 collection = db['Results']
-# Insert one document
-# collection.insert_one({"name": "John Doe", "age": 30})
 
-# Insert multiple documents
-# collection.insert_many([{"name": "Jane Doe", "age": 25}, {"name": "Alice", "age": 22}])
 
 
 url = 'https://www.semanticscholar.org/'
@@ -58,11 +51,6 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
     else:
         paper_citations = soup.find_all('a', attrs={"data-heap-nav":"citing-papers"} )[0].text[:-10]
 
-
-
-
-
-
     if soup.find(lambda tag: has_with_substring(tag, "data-heap-nav", "cited-papers")) is None:
         paper_references = 'unknown'
     else:            
@@ -70,12 +58,6 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
         references = soup.find_all('a', attrs={'data-heap-id':'citation_title'})
         for a in references:
             paper_references.append(a.text)
-
-
-
-
-
-
 
     if soup.find(lambda tag: has_with_substring(tag, "data-test-id", "paper-year")) is None:
         paper_date = 'unknown'
@@ -185,7 +167,6 @@ def search_and_parse(query):
             EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='author-list-expand']"))
         )
                  browser2.execute_script("arguments[0].click();", author_button)
-                #  author_button.click()
                  author = True
             except:
                 author = False
