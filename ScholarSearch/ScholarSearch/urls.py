@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import home, paper_detail
+# from .views import home, paper_detail
 
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('paper/<str:object_id>/', views.paper_detail, name='paper_detail'),
+    path('search/', views.run_search, name='run_search'),
     path('search', views.search, name='search'),
     path('results/', views.search_results, name='search_results'),
     path('admin/', admin.site.urls),

@@ -129,6 +129,7 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
     "paper_references": paper_references,
     "paper_date":paper_date,
     "paper_pdf":paper_pdf,
+    "paper_publisher_type":paper_publisher_type,
     "paper_publisher_name":paper_publisher_name,
     "keywords_se":keywords_se,
     "keywords_paper":keywords_paper,

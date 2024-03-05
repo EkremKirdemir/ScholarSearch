@@ -1,8 +1,124 @@
-{% extends 'base.html' %} {% block title %}{{ document.paper_name }}{% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %}{{ document.paper_name }}{% endblock %}{% block navbar_title %}Paper Details{% endblock %} {% block extra_head %}
+<style>
+    /* Include styles that mimic the theme of your search page */
+    
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 60px 0 0;
+        /* Adjust padding to accommodate fixed navbar */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        /* Align to the top */
+        min-height: 100vh;
+        background: linear-gradient(to right, #6dd5ed, #2193b0);
+    }
+    
+    .paper-detail-container {
+        text-align: left;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 60px auto 0;
+        /* Space for navbar, auto centering */
+        width: 80%;
+        max-width: 800px;
+    }
+    
+    .paper-detail-container h1 {
+        color: #007bff;
+        font-size: 2em;
+        text-align: center;
+    }
+    
+    .doi {
+        font-size: 0.8em;
+        margin-bottom: 20px;
+    }
+    
+    .authors {
+        margin-bottom: 15px;
+    }
+    
+    .author {
+        display: inline-block;
+        background-color: #96c1e0;
+        color: #007bff;
+        margin-right: 10px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    
+    .paper-info {
+        margin-bottom: 20px;
+    }
+    
+    .abstract {
+        margin-bottom: 20px;
+    }
+    
+    .keywords {
+        margin-bottom: 20px;
+    }
+    
+    .urls {
+        margin-bottom: 20px;
+    }
+    
+    .references {
+        margin-bottom: 20px;
+    }
+    /* Add additional styles as needed */
+</style>
+{% endblock %} {% block content %}
 <div class="paper-detail-container">
+    <div class="doi">DOI: {{ document.doi }}</div>
     <h1>{{ document.paper_name }}</h1>
-    <!-- Display other details of the paper here -->
-    <p>{{ document.paper_abstract }}</p>
-    <!-- Add more details as needed -->
+
+    <div class="authors">
+        {% if document.paper_authors != 'unknown' %} {% for author in document.paper_authors %}
+        <span class="author">{{ author }}</span> {% endfor %} {% else %}
+        <span>Authors: Unknown</span> {% endif %}
+    </div>
+
+    <div class="paper-info">
+        <div>Publish Date: {{ document.paper_date }}</div>
+        <div>Citation Number: {{ document.paper_citations }}</div>
+        <div>Publisher Type: {{ document.paper_publisher_type }}</div>
+        <div>Publisher Name: {{ document.paper_publisher_name }}</div>
+    </div>
+
+    <div class="abstract">
+        <h3>Abstract</h3>
+        <p>{{ document.paper_abstract }}</p>
+    </div>
+
+    <div class="keywords">
+        <div>Searched with: {{ document.keywords_se }}</div>
+        <div>Field: {{ document.keywords_paper }}</div>
+    </div>
+
+    <div class="urls">
+        {% if document.paper_pdf != 'unknown' %}
+        <div>PDF URL: <a href="{{ document.paper_pdf }}">View PDF</a></div>
+        {% endif %} {% if document.paper_url != 'unknown' %}
+        <div>Paper URL: <a href="{{ document.paper_url }}">View Paper</a></div>
+        {% endif %}
+    </div>
+
+    <div class="references">
+        <h3>References</h3>
+        {% if document.paper_references != 'unknown' %}
+        <ul>
+            {% for reference in document.paper_references %}
+            <li>{{ reference }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div>No references available.</div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

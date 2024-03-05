@@ -138,10 +138,12 @@ def search_and_parse(query):
 
         search_button.click()
         browser.get(browser.current_url.replace('&sort=relevance','&sort=total-citations&pdf=true'))
-  
-        WebDriverWait(browser, 100).until(
+        try:
+            WebDriverWait(browser, 100).until(
             EC.presence_of_element_located((By.CLASS_NAME, "cl-paper-title"))
-        )
+            )
+        except:
+            return
 
         html = browser.page_source
         
@@ -187,13 +189,15 @@ def searchCorrection(input_str):
 
     corrected_words = []
     for word in words:
+        # Check if word is misspelled and try to correct it; use the original word if no correction found
         corrected_word = spell.correction(word) if word in misspelled else word
-        corrected_words.append(corrected_word)
+        # Only add the word if it is not None
+        if corrected_word is not None:
+            corrected_words.append(corrected_word)
 
     corrected_str = ' '.join(corrected_words)
+    return corrected_str if corrected_words else input_str
 
-    return corrected_str
-
-query = searchCorrection("deep learning")
-soup = search_and_parse(query)
-print("done")
+# query = searchCorrection("deep learning")
+# soup = search_and_parse(query)
+# print("done")
