@@ -11,6 +11,72 @@
         background: linear-gradient(to right, #6dd5ed, #2193b0);
     }
     
+    .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        /* Space between form items */
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        justify-content: space-between;
+        /* Distribute space between the elements */
+    }
+    
+    .filter-form>div,
+    .filter-form>button {
+        flex: 1 1 auto;
+        /* Allow items to grow and shrink as needed */
+    }
+    
+    .filter-form>button {
+        margin-left: auto;
+        /* Push the button to the right */
+        width: auto;
+        /* Override full width */
+        white-space: nowrap;
+        /* Prevent text wrapping inside the button */
+    }
+    
+    .filter-form label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .filter-form div {
+        margin-bottom: 10px;
+    }
+    
+    .filter-form label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .filter-form input[type="text"],
+    .filter-form select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .filter-form button {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .filter-form button:hover {
+        background-color: #0056b3;
+    }
+    
     .search-results-container {
         text-align: center;
         background-color: rgba(255, 255, 255, 0.8);
@@ -22,44 +88,86 @@
         margin-top: 20px;
     }
     
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-    
-    li {
+    .result-card {
         background-color: #fff;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
     }
     
-    .pagination {
+    .result-card:hover {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .result-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 5px;
+    }
+    
+    .result-info {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 5px;
+    }
+    
+    .result-info span {
+        font-weight: bold;
+    }
+    
+    ul {
+        padding: 0;
         margin-top: 20px;
     }
     
-    .pagination .step-links {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
+    li {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        list-style-type: none;
     }
     
-    .pagination a {
+    li a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    
+    li a:hover {
+        text-decoration: underline;
+    }
+    
+    .pagination {
+        margin-top: 30px;
+        padding: 20px;
+    }
+    
+    .pagination .step-links a {
         background-color: #007bff;
         color: white;
         padding: 8px 16px;
+        margin: 0 4px;
+        border-radius: 4px;
         text-decoration: none;
-        border-radius: 5px;
         transition: background-color 0.3s ease;
     }
     
-    .pagination a:hover {
+    .pagination .step-links a:hover {
         background-color: #0056b3;
     }
     
     .pagination .current {
         padding: 8px 16px;
+        background-color: #6c757d;
+        color: white;
+        border-radius: 4px;
     }
 </style>
 {% endblock %} {% block content %}
@@ -103,11 +211,17 @@
     </form>
     <ul>
         {% for result in page_obj %}
-        <li>
-            <a href="{% url 'paper_detail' result.id_str %}">{{ result.paper_name }}</a><br> Publish Date: {{ result.paper_date }}<br> Authors: {{ result.paper_authors|join:", " }}<br> Citations: {{ result.paper_citations }}<br>
-            <br> Abstract: {{ result.paper_abstract|striptags|truncatewords:20 }}<br>
+        <li class="result-card">
+            <div class="result-title">
+                <a href="{% url 'paper_detail' result.id_str %}">{{ result.paper_name }}</a>
+            </div>
+            <div class="result-info">
+                <span>Publish Date:</span> {{ result.paper_date }}<br>
+                <span>Authors:</span> {{ result.paper_authors|slice:":10"|join:", " }}{% if result.paper_authors|length > 10 %}, et al.{% endif %}<br>
+                <span>Citations:</span> {{ result.paper_citations }}<br>
+                <span>Abstract:</span> {{ result.paper_abstract|striptags|truncatewords:20 }}
+            </div>
         </li>
-
         {% empty %}
         <li>No results found for "{{ query }}".</li>
         {% endfor %}

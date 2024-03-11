@@ -11,6 +11,111 @@
         background: linear-gradient(to right, #6dd5ed, #2193b0);
     }
     
+    .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        /* Space between form items */
+        background-color: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        justify-content: space-between;
+        /* Distribute space between the elements */
+    }
+    
+    .filter-form>div,
+    .filter-form>button {
+        flex: 1 1 auto;
+        /* Allow items to grow and shrink as needed */
+    }
+    
+    .filter-form>button {
+        margin-left: auto;
+        /* Push the button to the right */
+        width: auto;
+        /* Override full width */
+        white-space: nowrap;
+        /* Prevent text wrapping inside the button */
+    }
+    
+    .filter-form label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .filter-form div {
+        margin-bottom: 10px;
+    }
+    
+    .filter-form label {
+        margin-right: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .filter-form input[type="text"],
+    .filter-form select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .filter-form button {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .filter-form button:hover {
+        background-color: #0056b3;
+    }
+    
+    .results-list {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        /* Remove bullets */
+    }
+    
+    .results-list li {
+        background-color: #fff;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    
+    .results-list li:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .results-list a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 1.1em;
+        /* Slightly larger font size for the paper name */
+    }
+    
+    .results-list a:hover {
+        text-decoration: underline;
+        /* Add an underline on hover to indicate clickability */
+    }
+    
+    .no-results {
+        font-style: italic;
+        color: #6c757d;
+    }
+    
     .search-results-container {
         text-align: center;
         background-color: rgba(255, 255, 255, 0.8);
@@ -23,49 +128,60 @@
     }
     
     ul {
-        list-style: none;
         padding: 0;
-    }
-    
-    li {
-        background-color: #fff;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .pagination {
         margin-top: 20px;
     }
     
-    .pagination .step-links {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
+    li {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        list-style-type: none;
     }
     
-    .pagination a {
+    li a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    
+    li a:hover {
+        text-decoration: underline;
+    }
+    
+    .pagination {
+        margin-top: 30px;
+        padding: 20px;
+    }
+    
+    .pagination .step-links a {
         background-color: #007bff;
         color: white;
         padding: 8px 16px;
+        margin: 0 4px;
+        border-radius: 4px;
         text-decoration: none;
-        border-radius: 5px;
         transition: background-color 0.3s ease;
     }
     
-    .pagination a:hover {
+    .pagination .step-links a:hover {
         background-color: #0056b3;
     }
     
     .pagination .current {
         padding: 8px 16px;
+        background-color: #6c757d;
+        color: white;
+        border-radius: 4px;
     }
 </style>
 {% endblock %}{% block content %} {% with request.GET.urlencode as query_params %}
 <div class="search-results-container">
     <h2>Past Search Results</h2>
-    <form method="get" action="{% url 'home' %}">
+    <form method="get" action="{% url 'home' %}" class="filter-form">
         <div>
             <label for="query">Search Keywords:</label>
             <input type="text" id="query" name="query" placeholder="Search Keywords" value="{{ request.GET.query }}">
@@ -105,15 +221,16 @@
         <button type="submit">Apply Filters</button>
     </form>
 
-    <ul>
+    <ul class="results-list">
         {% for result in page_obj %}
         <li>
             <a href="{% url 'paper_detail' result.id_str %}">{{ result.paper_name }}</a>
         </li>
         {% empty %}
-        <li>No past search results found.</li>
+        <li class="no-results">No past search results found.</li>
         {% endfor %}
     </ul>
+
 
     <div class="pagination">
         <span class="step-links">
