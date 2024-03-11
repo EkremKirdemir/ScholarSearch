@@ -20,7 +20,7 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
 chrome_options.add_argument("user-agent=whateverUserAgent")  
-chrome_options.add_argument("--headless")  # Run in background
+chrome_options.add_argument("--headless")
 def getPublisherType():
     a = random.random()
     if a >=0.3:
@@ -168,7 +168,6 @@ def search_and_parse(query):
         paper_url = a.get('href')
         with webdriver.Chrome(options=chrome_options) as browser2:
             browser2.get(url[:-1] + paper_url)
-            # browser2.get('https://www.semanticscholar.org/paper/Data-Mining-Practical-Machine-Learning-Tools-and-%E0%B8%AA%E0%B8%B7%E0%B8%9A%E0%B8%AA%E0%B8%B4%E0%B8%87%E0%B8%AB%E0%B9%8C/730ca170962a58607e092035beb2afc4b5fa6242')
             WebDriverWait(browser2,10)
             try:
                 expand_button = WebDriverWait(browser2, 10).until(

@@ -1,16 +1,12 @@
 {% extends 'base.html' %} {% block title %}{{ document.paper_name }}{% endblock %}{% block navbar_title %}Paper Details{% endblock %} {% block extra_head %}
 <style>
-    /* Include styles that mimic the theme of your search page */
-    
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 60px 0 0;
-        /* Adjust padding to accommodate fixed navbar */
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        /* Align to the top */
         min-height: 100vh;
         background: linear-gradient(to right, #6dd5ed, #2193b0);
     }
@@ -22,7 +18,6 @@
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         margin: 60px auto 0;
-        /* Space for navbar, auto centering */
         width: 80%;
         max-width: 800px;
     }
@@ -70,7 +65,6 @@
     .references {
         margin-bottom: 20px;
     }
-    /* Add additional styles as needed */
 </style>
 {% endblock %} {% block content %}
 <div class="paper-detail-container">

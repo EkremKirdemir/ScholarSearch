@@ -4,11 +4,9 @@
         font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 60px 0 0;
-        /* Adjust padding to accommodate fixed navbar */
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        /* Align to the top */
         min-height: 100vh;
         background: linear-gradient(to right, #6dd5ed, #2193b0);
     }
@@ -21,9 +19,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         width: 80%;
         max-width: 1000px;
-        /* Adjusted for a wider container */
         margin-top: 20px;
-        /* Space below navbar */
     }
     
     ul {
@@ -95,6 +91,14 @@
             <label for="publisher_type">Publisher Type:</label>
             <input type="text" id="publisher_type" name="publisher_type" placeholder="Publisher Type">
         </div>
+        <div>
+            <label for="order_by">Sort by:</label>
+            <select name="order_by" id="order_by">
+                <option value="default">Default</option>
+                <option value="alphabetical" {% if order_by == 'alphabetical' %}selected{% endif %}>Alphabetical</option>
+                <option value="date" {% if order_by == 'date' %}selected{% endif %}>Date</option>
+            </select>
+        </div>
         <button type="submit">Apply Filters</button>
     </form>
     <ul>
@@ -112,16 +116,15 @@
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1&order_by={{ order_by }}">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}&order_by={{ order_by }}">previous</a>
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">&laquo; previous</a>
             {% endif %}
-            
+    
             <span class="current">
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             </span> {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}&order_by={{ order_by }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}&order_by={{ order_by }}">last &raquo;</a> {% endif %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">next &raquo;</a> {% endif %}
         </span>
     </div>
+
 </div>
 {% endblock %}
