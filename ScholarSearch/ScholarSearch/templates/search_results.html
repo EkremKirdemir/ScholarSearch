@@ -69,6 +69,34 @@
 {% endblock %} {% block content %}
 <div class="search-results-container">
     <h2>Search Results for "{{ query }}"</h2>
+    <form action="{% url 'search_results' %}" method="get" class="filter-form">
+        <input type="hidden" name="query" value="{{ query }}">
+        <div>
+            <label for="paper_name">Paper Name:</label>
+            <input type="text" id="paper_name" name="paper_name" placeholder="Paper Name">
+        </div>
+        <div>
+            <label for="paper_authors">Paper Authors:</label>
+            <input type="text" id="paper_authors" name="paper_authors" placeholder="Authors">
+        </div>
+        <div>
+            <label for="paper_abstract">Abstract:</label>
+            <input type="text" id="paper_abstract" name="paper_abstract" placeholder="Abstract">
+        </div>
+        <div>
+            <label for="paper_publisher">Publisher Name:</label>
+            <input type="text" id="paper_publisher" name="paper_publisher" placeholder="Publisher Name">
+        </div>
+        <div>
+            <label for="keywords">Keywords:</label>
+            <input type="text" id="keywords" name="keywords" placeholder="Keywords">
+        </div>
+        <div>
+            <label for="publisher_type">Publisher Type:</label>
+            <input type="text" id="publisher_type" name="publisher_type" placeholder="Publisher Type">
+        </div>
+        <button type="submit">Apply Filters</button>
+    </form>
     <ul>
         {% for result in page_obj %}
         <li>
@@ -81,12 +109,19 @@
         {% endfor %}
     </ul>
 
-    <!-- Pagination -->
     <div class="pagination">
-        {% if page_obj.has_previous %}
-        <a href="?query={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a> {% endif %}
-        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span> {% if page_obj.has_next %}
-        <a href="?query={{ query }}&page={{ page_obj.next_page_number }}">Next</a> {% endif %}
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&order_by={{ order_by }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&order_by={{ order_by }}">previous</a>
+            {% endif %}
+            
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span> {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&order_by={{ order_by }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}&order_by={{ order_by }}">last &raquo;</a> {% endif %}
+        </span>
     </div>
 </div>
 {% endblock %}

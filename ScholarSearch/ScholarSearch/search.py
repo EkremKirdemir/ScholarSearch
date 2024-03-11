@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
+import random
 
 client = MongoClient('mongodb+srv://admin:admin@search0.sof6xtt.mongodb.net/')
 db = client['SearchScholar']
@@ -20,6 +21,19 @@ chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
 chrome_options.add_argument("user-agent=whateverUserAgent")  
 chrome_options.add_argument("--headless")  # Run in background
+def getPublisherType():
+    a = random.random()
+    if a >=0.3:
+        publisher_type = 'journal'
+    elif 0.2<=a<0.3:
+        publisher_type = 'conference'
+    elif 0.1<=a<0.2:
+        publisher_type = 'book'
+    elif 0.05<=a<0.1:
+        publisher_type = 'newspaper'
+    else:
+        publisher_type = 'web'
+    return publisher_type
 
 def getPublisherName(soup):
     url = soup.find('a', attrs={'class':'cl-paper-venue cl-paper-venue--paper-metadata'}).get('href')
@@ -51,11 +65,11 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
     else:
         paper_citations = soup.find_all('a', attrs={"data-heap-nav":"citing-papers"} )[0].text[:-10]
 
-    if soup.find(lambda tag: has_with_substring(tag, "data-heap-nav", "cited-papers")) is None:
+    if soup.find(lambda tag: has_with_substring(tag, "data-test-id", "reference")) is None:
         paper_references = 'unknown'
     else:            
         paper_references = []
-        references = soup.find_all('a', attrs={'data-heap-id':'citation_title'})
+        references = soup.find('div',attrs={'data-test-id':'reference'}).find_all('a', attrs={'data-heap-id':'citation_title'})
         for a in references:
             paper_references.append(a.text)
 
@@ -71,14 +85,14 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
         if paper_pdf.startswith("/reader"):
             paper_pdf = "https://www.semanticscholar.org" + paper_pdf
     
-    if soup.find(lambda tag: has_with_substring(tag, "class", "cl-paper-venue cl-paper-venue--paper-metadata")) is None:
+    if soup.find('ul', attrs={'class':'flex-row-vcenter paper-meta'}).find(lambda tag: has_with_substring(tag, "data-heap-id", "paper-meta-journal")) is None:
         paper_publisher_name = 'unknown'
     elif soup.find(lambda tag: has_with_substring(tag, "class", "flex-row-vcenter paper-meta")).find(lambda tag: has_with_substring(tag, "data-heap-id", "paper-meta-journal")):
         paper_publisher_name = soup.find('ul', attrs={'class':'flex-row-vcenter paper-meta'}).find('span', attrs={'data-heap-id':'paper-meta-journal'}).text
     else:
         paper_publisher_name = getPublisherName(soup)
 
-    paper_publisher_type = 0
+    paper_publisher_type = getPublisherType()
     paper_authors = []
 
     if soup.find(lambda tag: has_with_substring(tag, "class", "author-list__link author-list__author-name")) is None:
@@ -105,8 +119,8 @@ def writeSearchResults(soup,query,keywords_paper,expand,url):
     document = {
     "paper_name": paper_name,
     "doi": paper_doi,
-    # "citatsad": ["reading", "hiking", "coding"],
     "paper_authors":paper_authors,
+    "paper_publisher_type":paper_publisher_type,
     "paper_citations": paper_citations,
     "paper_references": paper_references,
     "paper_date":paper_date,
@@ -188,10 +202,8 @@ def searchCorrection(input_str):
     misspelled = spell.unknown(words)
 
     corrected_words = []
-    for word in words:
-        # Check if word is misspelled and try to correct it; use the original word if no correction found
+    for word in words:       
         corrected_word = spell.correction(word) if word in misspelled else word
-        # Only add the word if it is not None
         if corrected_word is not None:
             corrected_words.append(corrected_word)
 
