@@ -66,17 +66,51 @@
         padding: 8px 16px;
     }
 </style>
-{% endblock %}{% block content %}
+{% endblock %}{% block content %} {% with request.GET.urlencode as query_params %}
 <div class="search-results-container">
     <h2>Past Search Results</h2>
     <form method="get" action="{% url 'home' %}">
-        <label for="order_by">Order by:</label>
-        <select name="order_by" id="order_by" onchange="this.form.submit()">
+        <!-- Filter Inputs -->
+        <!-- <input type="text" name="query" placeholder="Search Keywords" value="{{ request.GET.query }}"> -->
+        <div>
+            <label for="query">Search Keywords:</label>
+            <input type="text" id="query" name="query" placeholder="Search Keywords" value="{{ request.GET.query }}">
+        </div>
+        <div>
+            <label for="paper_name">Paper Name:</label>
+            <input type="text" id="paper_name" name="paper_name" placeholder="Paper Name" value="{{ request.GET.paper_name }}">
+        </div>
+        <div>
+            <label for="paper_authors">Paper Authors:</label>
+            <input type="text" id="paper_authors" name="paper_authors" placeholder="Authors" value="{{ request.GET.paper_authors }}">
+        </div>
+        <div>
+            <label for="paper_abstract">Abstract:</label>
+            <input type="text" id="paper_abstract" name="paper_abstract" placeholder="Abstract" value="{{ request.GET.paper_abstract }}">
+        </div>
+        <div>
+            <label for="paper_publisher">Publisher Name:</label>
+            <input type="text" id="paper_publisher" name="paper_publisher" placeholder="Publisher Name" value="{{ request.GET.paper_publisher }}">
+        </div>
+        <div>
+            <label for="keywords">Keywords:</label>
+            <input type="text" id="keywords" name="keywords" placeholder="Keywords" value="{{ request.GET.keywords }}">
+        </div>
+        <div>
+            <label for="publisher_type">Publisher Type:</label>
+            <input type="text" id="publisher_type" name="publisher_type" placeholder="Publisher Type" value="{{ request.GET.publisher_type }}">
+        </div>
+
+        <!-- Sort Order -->
+        <select name="order_by" id="order_by">
             <option value="default" {% if order_by == 'default' %}selected{% endif %}>Default</option>
             <option value="alphabetical" {% if order_by == 'alphabetical' %}selected{% endif %}>Alphabetical</option>
-            <!-- Additional sorting options can be added here -->
+            <option value="date" {% if order_by == 'date' %}selected{% endif %}>Date</option>
         </select>
+
+        <button type="submit">Apply Filters</button>
     </form>
+
     <ul>
         {% for result in page_obj %}
         <li>
@@ -91,16 +125,15 @@
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1&order_by={{ order_by }}">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}&order_by={{ order_by }}">previous</a>
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">&laquo; previous</a>
             {% endif %}
-            
+    
             <span class="current">
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             </span> {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}&order_by={{ order_by }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}&order_by={{ order_by }}">last &raquo;</a> {% endif %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">next &raquo;</a> {% endif %}
         </span>
     </div>
+
 </div>
-{% endblock %}
+{% endwith %} {% endblock %}
