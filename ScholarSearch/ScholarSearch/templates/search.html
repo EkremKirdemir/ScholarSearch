@@ -12,29 +12,23 @@
         align-items: center;
         height: 100vh;
         background: linear-gradient(to right, #6dd5ed, #2193b0);
-        /* A nice blue gradient */
     }
     
     .search-container {
         text-align: center;
         background-color: rgba(255, 255, 255, 0.8);
-        /* Slightly transparent white */
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         width: 50%;
-        /* Set the width to 50% of the viewport */
         max-width: 600px;
-        /* Maximum width */
     }
     
     .search-box {
         padding: 10px 15px;
         width: calc(100% - 100px);
-        /* Adjust width according to button size */
         border: none;
         margin-right: -4px;
-        /* Adjust the negative margin to create seamless link to button */
         vertical-align: top;
     }
     
@@ -59,7 +53,7 @@
 {% endblock %} {% block content %}
 <div class="search-container">
     <h1>Scholar Search Engine</h1>
-    <form action="{% url 'run_search' %}" method="get" class="search-form">
+    <form action="{% url 'run_search' %}" method="get" class="search-form" id="searchForm">
         <input type="text" name="query" class="search-box" placeholder="Enter search terms...">
         <button type="submit" class="search-button">Search</button>
     </form>

@@ -14,7 +14,6 @@ import re
 
 @require_http_methods(["GET"])
 def search(request):
-    # Display the search page
     return render(request, 'search.html')
 
 @require_http_methods(["GET"])
