@@ -15,29 +15,23 @@
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
-        /* Space between form items */
         background-color: #f8f9fa;
         padding: 20px;
         margin-bottom: 20px;
         border-radius: 5px;
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
         justify-content: space-between;
-        /* Distribute space between the elements */
     }
     
     .filter-form>div,
     .filter-form>button {
         flex: 1 1 auto;
-        /* Allow items to grow and shrink as needed */
     }
     
     .filter-form>button {
         margin-left: auto;
-        /* Push the button to the right */
         width: auto;
-        /* Override full width */
         white-space: nowrap;
-        /* Prevent text wrapping inside the button */
     }
     
     .filter-form label {
@@ -81,7 +75,6 @@
         padding: 0;
         margin: 0;
         list-style-type: none;
-        /* Remove bullets */
     }
     
     .results-list li {
@@ -103,12 +96,10 @@
         color: #007bff;
         font-weight: bold;
         font-size: 1.1em;
-        /* Slightly larger font size for the paper name */
     }
     
     .results-list a:hover {
         text-decoration: underline;
-        /* Add an underline on hover to indicate clickability */
     }
     
     .no-results {
@@ -211,7 +202,6 @@
             <input type="text" id="publisher_type" name="publisher_type" placeholder="Publisher Type" value="{{ request.GET.publisher_type }}">
         </div>
 
-        <!-- Sort Order -->
         <select name="order_by" id="order_by">
             <option value="default" {% if order_by == 'default' %}selected{% endif %}>Default</option>
             <option value="alphabetical" {% if order_by == 'alphabetical' %}selected{% endif %}>Alphabetical</option>
