@@ -37,3 +37,4 @@ To get this project up and running on your local machine, follow these steps:
 - **Backend:** Django (Python)
 - **Frontend:** HTML, CSS, JavaScript
 - **Database:** MongoDB
+- **Web Scraping:** Selenium, BeautifulSoup
