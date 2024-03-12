@@ -48,6 +48,16 @@ def search_results(request):
 
     if order_by == 'alphabetical':
         documents = list(collection.find(query_filters).sort('paper_name', 1))
+    elif order_by == 'citations':
+        documents = list(collection.find(query_filters))
+        documents = sorted(
+    documents,
+    key=lambda x: (
+        x['paper_citations'] == 'unknown',
+        int(x['paper_citations'].replace(',', '').replace('.', '')) if x['paper_citations'] != 'unknown' else 0
+    ),
+    reverse=True
+)
     elif order_by == 'date':
         documents = list(collection.find(query_filters))
         documents = sorted(documents, key=lambda x: (x.get('paper_date', '').split()[-1] if x.get('paper_date', '').split()[-1].isdigit() else '9999', x.get('paper_date', '')))
@@ -118,7 +128,15 @@ def home(request):
             return 9999 if doc.get('paper_date', '') == 'unknown' else 10000
 
         documents.sort(key=extract_year)
-
+    elif order_by == 'citations':
+        documents = sorted(
+    documents,
+    key=lambda x: (
+        x['paper_citations'] == 'unknown',
+        int(x['paper_citations'].replace(',', '').replace('.', '')) if x['paper_citations'] != 'unknown' else 0
+    ),
+    reverse=True
+)
     elif order_by == 'alphabetical':
         documents.sort(key=lambda x: x.get('paper_name', '').lower())
 
