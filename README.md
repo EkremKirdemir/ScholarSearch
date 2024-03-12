@@ -1,11 +1,12 @@
 # Scholar Search Engine
 
-Scholar Search Engine is a Django web application that interfaces with academic databases like SemanticScholar to search for academic papers based on user-provided keywords. The results are then displayed to the user, offering a clean and accessible interface for academic research.
+Scholar Search Engine is a Django-based web application that provides an interface to search for academic papers from sources like SemanticScholar. It leverages web scraping techniques to collect data and display search results to the user.
 
 ## Features
 
 - **Keyword Search**: Users can enter a search term to find relevant academic papers.
 - **Result Filtering**: Results can be filtered by paper name, authors, abstract, and more.
+- **Automated Web Scraping**: Utilizes Selenium and BeautifulSoup for robust web scraping.
 - **Responsive Design**: A user-friendly interface that adapts to various screen sizes.
 - **Pagination**: Search results are paginated for easier navigation.
 
