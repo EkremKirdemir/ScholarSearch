@@ -27,19 +27,14 @@
     .search-form {
         display: flex;
         flex-direction: column;
-        /* Stack elements vertically */
         align-items: center;
-        /* Align items to the center */
     }
     
     .search-box {
         padding: 10px 15px;
         width: 100%;
-        /* Adjust the width as needed */
         margin: 0 0 20px 0;
-        /* Add space below the search box */
         border: 1px solid #ccc;
-        /* Add a border */
         border-radius: 5px;
     }
     
@@ -51,38 +46,31 @@
         cursor: pointer;
         border-radius: 5px;
         width: auto;
-        /* Do not stretch the button */
     }
     
     .search-button:hover {
         background-color: #0056b3;
     }
-    /* Loading message style */
     
     .loading-message {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-top: 20px;
-        /* Space from the form */
         font-size: 1.2em;
         color: #333;
         visibility: hidden;
-        /* Hide it by default */
     }
     
     .loading-icon {
         border: 5px solid #f3f3f3;
-        /* Light grey */
         border-top: 5px solid #3498db;
-        /* Blue */
         border-radius: 50%;
         width: 30px;
         height: 30px;
         margin-right: 10px;
         animation: spin 1s linear infinite;
     }
-    /* Keyframes for the spin animation */
     
     @keyframes spin {
         0% {
@@ -107,13 +95,12 @@
 
     <script>
         document.getElementById('searchForm').onsubmit = function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            document.getElementById('loadingMessage').style.visibility = 'visible'; // Show the loading message
+            event.preventDefault();
+            document.getElementById('loadingMessage').style.visibility = 'visible';
 
-            // Submit the form after a short delay to allow the animation to show
             setTimeout(function() {
                 document.getElementById('searchForm').submit();
-            }, 1000); // Delay in milliseconds (1000ms = 1 second)
+            }, 1000);
         };
     </script>
 
