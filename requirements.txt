@@ -48,7 +48,7 @@ html5lib==1.1
 idna==3.3
 inexactsearch==1.0.2
 ipykernel==6.15.0
-ipython==8.4.0
+ipython==8.10.0
 ipython-genutils==0.2.0
 ipywidgets==7.7.1
 itsdangerous==2.1.2
